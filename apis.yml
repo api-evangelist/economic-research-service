@@ -9,9 +9,9 @@ description: >-
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Federal Government
   - Agriculture
   - Economics
+  - Federal Government
   - Research
 url: https://www.ers.usda.gov/
 created: '2024-12-25'
