@@ -52,6 +52,10 @@ apis:
       - url: https://www.ers.usda.gov/developer/geospatial-apis
         type: Documentation
 common:
+  - type: GitHubOrganization
+    url: https://github.com/usda-ers
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/usda-economic-research-service
   - type: Website
     url: https://www.ers.usda.gov/
   - type: Documentation
