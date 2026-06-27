@@ -36,7 +36,7 @@ apis:
       - url: https://www.ers.usda.gov/developer/data-apis
         type: Documentation
       - url: https://api.data.gov/signup/
-        type: SignUp
+        type: Signup
   - aid: economic-research-service:ers-geospatial-apis
     name: USDA ERS Geospatial APIs
     description: >-
