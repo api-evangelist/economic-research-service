@@ -52,6 +52,8 @@ apis:
       - url: https://www.ers.usda.gov/developer/geospatial-apis
         type: Documentation
 common:
+  - type: DomainSecurity
+    url: security/economic-research-service-domain-security.yml
   - type: GitHubOrganization
     url: https://github.com/usda-ers
   - type: LinkedIn
@@ -60,6 +62,8 @@ common:
     url: https://www.ers.usda.gov/
   - type: Documentation
     url: https://www.ers.usda.gov/developer/
+  - url: https://www.ers.usda.gov/amber-waves
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
