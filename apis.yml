@@ -23,6 +23,11 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/economic-r
 tags:
   - Agriculture
   - Economics
+  - Federal-Government
+  - Research
+tags_raw:
+  - Agriculture
+  - Economics
   - Federal Government
   - Research
 url: https://www.ers.usda.gov/
