@@ -1,7 +1,7 @@
 ---
 title: "U.S. Obesity Rate Changes Differ for Rural and Urban Areas, as Well as Across Regions"
 url: "https://www.ers.usda.gov/amber-waves/2025/august/us-obesity-rate-changes-differ-for-rural-and-urban-areas-as-well-as-across-regions"
-date: "2025-08"
+date: "2026-09-01"
 author: ""
 feed_url: "https://www.ers.usda.gov/amber-waves"
 ---

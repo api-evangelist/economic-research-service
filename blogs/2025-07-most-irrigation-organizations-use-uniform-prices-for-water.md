@@ -1,7 +1,7 @@
 ---
 title: "Most Irrigation Organizations Use Uniform Prices for Water Deliveries"
 url: "https://www.ers.usda.gov/amber-waves/2025/july/most-irrigation-organizations-use-uniform-prices-for-water-deliveries"
-date: "2025-07"
+date: "2026-09-01"
 author: ""
 feed_url: "https://www.ers.usda.gov/amber-waves"
 ---

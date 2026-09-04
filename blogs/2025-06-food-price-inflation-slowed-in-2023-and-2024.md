@@ -1,7 +1,7 @@
 ---
 title: "Food Price Inflation Slowed in 2023 and 2024"
 url: "https://www.ers.usda.gov/amber-waves/2025/june/food-price-inflation-slowed-in-2023-and-2024"
-date: "2025-06"
+date: "2026-09-01"
 author: ""
 feed_url: "https://www.ers.usda.gov/amber-waves"
 ---
