@@ -1,0 +1,94 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://api.data.gov/docs/developer-manual/ (General Web Service Errors), the gateway that
+  fronts api.ers.usda.gov. Envelope confirmed live on 2026-09-06 against
+  https://api.ers.usda.gov/data/arms/year (403 API_KEY_MISSING) and
+  https://api.ers.usda.gov/.well-known/security.txt (404 NOT_FOUND), both of which returned
+  exactly the documented shape. ERS itself publishes no error reference.
+provider: Economic Research Service
+providerId: economic-research-service
+format: vendor-json
+rfc9457: false
+description: >-
+  Error catalog for the ERS ARMS Data API. The errors are the API Umbrella / api.data.gov
+  gateway's, not ERS's - ERS documents none of its own, so a consumer who gets past the gateway
+  and sends a bad ARMS query has no published catalog to interpret the response against. The
+  envelope is a vendor JSON object, not RFC 9457 application/problem+json; the media type
+  observed was application/json.
+envelope:
+  content_type: application/json
+  shape: '{"error": {"code": "<ERROR_CODE>", "message": "<human readable>"}}'
+  alternate_formats:
+    - json
+    - xml
+    - csv
+    - html
+  handling_guidance: >-
+    api.data.gov states the message text is subject to change and that error handling should key
+    on the HTTP status code or the error.code value, never on the message string.
+problem_types:
+  - code: API_KEY_MISSING
+    status: 403
+    title: No API key was supplied
+    detail: An API key was not supplied on the request.
+    remediation: >-
+      Pass the key as ?api_key=, the X-Api-Key header, or the HTTP basic auth username. Get a
+      free key at https://api.data.gov/signup/.
+    observed: true
+  - code: API_KEY_INVALID
+    status: 403
+    title: Invalid API key
+    detail: An invalid API key was supplied.
+    remediation: Check the key value, or sign up for a new one.
+  - code: API_KEY_DISABLED
+    status: 403
+    title: API key disabled
+    detail: The API key supplied has been disabled by an administrator.
+    remediation: Contact the ERS ARMS Team, listed on https://www.ers.usda.gov/developer/data-apis/arms-data-api.
+  - code: API_KEY_UNAUTHORIZED
+    status: 403
+    title: API key not authorized for this service
+    detail: The API key supplied is not authorized to access the given service.
+    remediation: Contact the owning agency (ERS) for access.
+  - code: API_KEY_UNVERIFIED
+    status: 403
+    title: API key not yet verified
+    detail: The API key supplied has not been verified yet.
+    remediation: Check the email address used at signup and complete verification.
+  - code: HTTPS_REQUIRED
+    status: 400
+    title: HTTPS required
+    detail: Requests to this API must be made over HTTPS.
+    remediation: Reissue the request against the https:// URL.
+  - code: OVER_RATE_LIMIT
+    status: 429
+    title: Rate limit exceeded
+    detail: The API key has exceeded the rate limits.
+    remediation: >-
+      Back off and retry after the rolling hour passes. No Retry-After header is returned;
+      inspect X-RateLimit-Remaining on successful responses to avoid this.
+    see_also: rate-limits/economic-research-service-rate-limits.yml
+  - code: NOT_FOUND
+    status: 404
+    title: No API at this URL
+    detail: An API could not be found at the given URL.
+    remediation: Check the path. ARMS resources live under https://api.ers.usda.gov/data/arms/.
+    observed: true
+    note: >-
+      The gateway checks the key BEFORE the path: an unauthenticated request to a nonexistent
+      ARMS path (https://api.ers.usda.gov/data/arms/nonexistent, probed 2026-09-06) returns 403
+      API_KEY_MISSING, not 404. NOT_FOUND was observed on an unrouted path outside /data/.
+gaps:
+  - >-
+    No ARMS-specific error codes are published. The ARMS resources have required and
+    conditionally-required inputs (surveydata requires "year" plus one of "report" or
+    "variable") but ERS documents no error code, status or message for violating them. An agent
+    cannot distinguish a malformed ARMS query from a gateway rejection without calling it.
+  - >-
+    The ERS geospatial ArcGIS services return Esri's own error shapes
+    ({"error":{"code":...,"message":...,"details":[...]}} over REST, SOAP faults over WSDL).
+    ERS documents neither; it links to Esri's ArcGIS REST API documentation instead.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -4,10 +4,17 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Economic Research Service
 providerId: economic-research-service
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-06'
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://api.data.gov/docs/developer-manual/ (Web Service Rate Limits section), which is the
+  platform ERS directs API key registration to on
+  https://www.ers.usda.gov/developer/data-apis and
+  https://www.ers.usda.gov/developer/data-apis/arms-data-api. Confirmed against a live
+  unauthenticated request to https://api.ers.usda.gov/data/arms/year on 2026-09-06, which
+  returned HTTP 403 with an x-api-umbrella-request-id header and the exact API Umbrella error
+  envelope, establishing that api.ers.usda.gov runs behind api.data.gov.
 tags:
   - Agriculture
   - Economics
@@ -15,82 +22,82 @@ tags:
   - Research
   - Rate Limiting
   - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Economic Research Service API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
+description: >-
+  Published rate limits for the ERS ARMS Data API. ERS itself publishes no numbers; the limits
+  are set and documented by api.data.gov (API Umbrella), the shared Federal API management
+  service through which ERS issues and enforces keys. The ERS geospatial services on
+  gisportal.ers.usda.gov are NOT behind api.data.gov, take no key, and publish no limits at all.
+limit_count: 3
 headers:
   limit: X-RateLimit-Limit
   remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  reset: null
+  retryAfter: null
+  policy: null
+headers_note: >-
+  api.data.gov documents X-RateLimit-Limit and X-RateLimit-Remaining as returned on every API
+  response. It documents no reset header, no Retry-After, and no RateLimit-Policy. An agent can
+  therefore see how much budget is left but cannot read when the window reopens from the
+  response - the hour is a rolling window described only in prose.
 responseCodes:
   throttled: 429
   quotaExceeded: 429
-  serviceUnavailable: 503
+  errorCode: OVER_RATE_LIMIT
 limits:
-  - tier: free
-    name: Free Tier Default
+  - tier: registered-key
+    name: Default hourly limit per API key
     scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - USDA ERS Data APIs
-      - USDA ERS Geospatial APIs
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
+    metric: requests_per_hour
     limit: 1000
-    timeFrame: month
+    timeFrame: hour
+    window: rolling
     applies:
       - USDA ERS Data APIs
-      - USDA ERS Geospatial APIs
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
+    source: https://api.data.gov/docs/developer-manual/
+    note: >-
+      Applied across all api.data.gov requests made with that key, not per agency and not per
+      endpoint - a key shared with another Federal API spends the same 1,000. api.data.gov
+      states limits "may vary by service"; ERS publishes no ERS-specific override.
+  - tier: demo
+    name: DEMO_KEY hourly limit
+    scope: ip-address
+    metric: requests_per_hour
+    limit: 30
+    timeFrame: hour
     applies:
       - USDA ERS Data APIs
-      - USDA ERS Geospatial APIs
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
+    source: https://api.data.gov/docs/developer-manual/
+  - tier: demo
+    name: DEMO_KEY daily limit
+    scope: ip-address
+    metric: requests_per_day
+    limit: 50
+    timeFrame: day
     applies:
       - USDA ERS Data APIs
-      - USDA ERS Geospatial APIs
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - USDA ERS Data APIs
-      - USDA ERS Geospatial APIs
+    source: https://api.data.gov/docs/developer-manual/
+undocumented:
+  - api: USDA ERS Geospatial APIs
+    host: gisportal.ers.usda.gov
+    note: >-
+      No rate limits are published for the ArcGIS Server REST/SOAP services. The services are
+      anonymous (no key), and no X-RateLimit-* headers were observed on responses probed on
+      2026-09-06. The server does publish per-service ceilings that function as limits -
+      maxRecordCount 2000, maxImageWidth/maxImageHeight 4096, maxSelectionCount 2000 - readable
+      from any service's ?f=json document, e.g.
+      https://gisportal.ers.usda.gov/server/rest/services/Rural_Atlas_Data/Income/MapServer?f=json
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Exhaustion behaviour
+    description: >-
+      Exceeding the limit temporarily blocks the API key from further requests and returns HTTP
+      429 with error code OVER_RATE_LIMIT. The block lifts automatically as the rolling hour
+      passes; there is no manual reset and no documented Retry-After value.
+  - name: Higher limits
+    description: >-
+      api.data.gov instructs consumers needing higher limits to contact the owning agency
+      directly. For ARMS that is the ERS ARMS Team, listed on
+      https://www.ers.usda.gov/developer/data-apis/arms-data-api. There is no self-service
+      upgrade and no paid tier.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

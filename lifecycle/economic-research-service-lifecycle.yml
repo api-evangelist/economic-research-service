@@ -1,0 +1,94 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.ers.usda.gov/developer/api-terms-of-service,
+  https://www.ers.usda.gov/developer/data-apis/arms-data-api,
+  https://www.ers.usda.gov/developer/data-apis/arms-data-api/updates-and-revisions and
+  https://www.ers.usda.gov/developer/geospatial-apis, all read 2026-09-06.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  Lifecycle posture for the ERS API surfaces. ERS publishes a changelog and a terms of service
+  and nothing else: no versioning scheme, no deprecation policy, no Sunset or Deprecation
+  headers, no SLA, no status page. The terms reserve a broad unilateral right to change or
+  withdraw the API at any time, and one documented breaking change (2019-08-29) shipped with no
+  notice window at all.
+versioning:
+  scheme: none
+  in_path: false
+  in_header: false
+  in_media_type: false
+  current: null
+  note: >-
+    No version appears in https://api.ers.usda.gov/data/arms/* or in any documented response
+    field. The ArcGIS services do carry a currentVersion (12 / fullVersion 12.0.0, readable at
+    https://gisportal.ers.usda.gov/server/rest/info?f=json), but that is the ArcGIS Server
+    product version, not an ERS API version.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  notice_period: null
+  observed_breaking_changes:
+    - date: '2019-08-29'
+      change: Removed info.searching and info.formatting from every query result.
+      notice: None. Announced only as a dated line on the Updates and Revisions page.
+      source: https://www.ers.usda.gov/developer/data-apis/arms-data-api/updates-and-revisions
+  retirements:
+    - product: Supplemental Nutrition Assistance Program (SNAP) Data System
+      status: discontinued
+      note: >-
+        "Updates to the Supplemental Nutrition Assistance Program (SNAP) Data System have been
+        discontinued." Stated on the Geospatial APIs page with no date and no sunset schedule.
+      source: https://www.ers.usda.gov/developer/geospatial-apis
+    - product: FARA Food Access 2010 map service
+      status: archived-but-served
+      note: >-
+        "Archived food access measures from 2010 Census... Not in the app but still available to
+        API access or ArcGIS Pro access." An explicit statement that a service outlived its
+        consuming application - useful, and rare to see written down.
+      source: https://www.ers.usda.gov/developer/geospatial-apis
+  provider_rights:
+    note: >-
+      The API Terms of Service reserve the right to "terminate or deny you access to and use of
+      all or part of the API at any time for any other reason in its sole discretion", and to
+      modify the agreement by posting a revised version, with continued use constituting
+      acceptance. There is no corresponding commitment to notice.
+    source: https://www.ers.usda.gov/developer/api-terms-of-service
+sla:
+  published: false
+  uptime_target: null
+  note: >-
+    Explicitly disclaimed: "ERS makes no warranty that the API or ERS data will be error-free or
+    that access thereto will be continuous or uninterrupted."
+  source: https://www.ers.usda.gov/developer/api-terms-of-service
+status_page:
+  published: false
+  url: null
+  note: >-
+    No ERS or USDA status page was found for these APIs. A consumer has no published channel to
+    distinguish an outage from a rate-limit block or a retirement.
+changelog:
+  published: true
+  url: https://www.ers.usda.gov/developer/data-apis/arms-data-api/updates-and-revisions
+  machine_readable: false
+  artifact: changelog/economic-research-service-changelog.yml
+support:
+  channel: named agency contacts on each developer page
+  contacts:
+    - name: ARMS Team
+      page: https://www.ers.usda.gov/developer/data-apis/arms-data-api
+    - name: Thomas Kane
+      page: https://www.ers.usda.gov/developer/data-apis
+    - name: Trina Weilert
+      page: https://www.ers.usda.gov/developer/geospatial-apis
+  general: https://www.ers.usda.gov/contact-us
+  note: >-
+    Named individuals rather than a ticketing system or developer forum. There is no public
+    issue tracker; the USDA-REE-ERS GitHub repositories that mirror the documentation have
+    issues but have not been pushed to since 2020.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

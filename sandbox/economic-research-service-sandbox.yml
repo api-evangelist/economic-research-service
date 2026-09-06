@@ -1,0 +1,68 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://api.data.gov/docs/developer-manual/ (DEMO_KEY Rate Limits) and
+  https://www.ers.usda.gov/developer/data-apis, read 2026-09-06.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  ERS publishes no sandbox, no test environment and no fixture tooling of its own. There is one
+  real, published try-before-you-register credential, and it belongs to the platform rather than
+  to ERS: api.data.gov's shared DEMO_KEY. It is worth recording because it is the only way a
+  consumer - or an agent - can make a successful ARMS call without completing an email
+  round-trip first, and ERS never mentions it on its own pages.
+sandbox_environment: none
+test_vs_live:
+  separate_hosts: false
+  separate_keys: false
+  note: >-
+    There is no test host and no test/live key split. api.ers.usda.gov serves production data
+    to every key. The only distinction is quota: a registered key gets 1,000 requests an hour,
+    DEMO_KEY gets far less.
+shared_demo_credential:
+  value: DEMO_KEY
+  verbatim: true
+  source: https://api.data.gov/docs/developer-manual/
+  usage: https://api.ers.usda.gov/data/arms/year?api_key=DEMO_KEY
+  limits:
+    - metric: requests_per_hour
+      limit: 30
+      scope: ip-address
+    - metric: requests_per_day
+      limit: 50
+      scope: ip-address
+  note: >-
+    Published verbatim by api.data.gov as "the special DEMO_KEY api key... for initially
+    exploring APIs prior to signing up". Not invented here and not a secret - it is a documented
+    public literal. api.data.gov encourages signing up for a real key for any actual use. NOT
+    documented by ERS: a developer reading only the ERS pages is told to register and is never
+    told this exists.
+test_data:
+  cards: null
+  accounts: null
+  fixtures: null
+  note: >-
+    Not applicable. There are no test values to publish for a read-only public-data API - the
+    production data IS the test data, and ERS additionally publishes the full ARMS dataset as
+    bulk files that require no key at all, which is the honest offline-rehearsal path here.
+bulk_download:
+  key_required: false
+  note: >-
+    "A key is not required to use the bulk download facility"
+    (https://github.com/USDA-REE-ERS/ARMS-Data-API README). An exhaustive variable reference is
+    published as a CSV at
+    https://www.ers.usda.gov/sites/default/files/images/arms-all-variables-december-2023.csv.
+  source: https://github.com/USDA-REE-ERS/ARMS-Data-API/blob/master/README.md
+geospatial:
+  key_required: false
+  note: >-
+    The gisportal.ers.usda.gov ArcGIS REST and SOAP services need no credential at all, so the
+    entire geospatial surface can be explored, queried and integration-tested anonymously. In
+    practice that is the closest thing ERS has to a sandbox.
+time_simulation:
+  supported: false
+trigger_tooling:
+  supported: false
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

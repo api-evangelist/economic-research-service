@@ -1,0 +1,71 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://github.com/USDA-REE-ERS/widgets and the ERS map applications linked from
+  https://www.ers.usda.gov/developer/geospatial-apis, checked 2026-09-06.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  Client-side and embeddable surfaces ERS publishes, as distinct from SDKs. There are two, and
+  both are thin: an old first-party chart widget on GitHub, and the map atlases, which ERS
+  frames as reference implementations of its own geospatial services rather than as embeddable
+  components.
+component_count: 1
+families:
+  - family: Charts of Note widget
+    kind: embeddable-widget
+    official: true
+    loader: null
+    url: https://github.com/USDA-REE-ERS/widgets
+    version: null
+    published: '2013-11-29'
+    note: >-
+      A single 7.5 KB source file ("Charts of Note Widget") in the first-party USDA-REE-ERS
+      GitHub org, described as "Source code for widgets using ERS APIs". There is no hosted
+      loader script, no CDN URL, no version and no documentation page on ers.usda.gov pointing
+      at it. Recorded because it is real and first-party, not because it is usable today - it
+      has not been touched since 2013 and the ERS APIs it was written against have since been
+      replaced.
+reference_applications:
+  note: >-
+    Not components, but the closest thing ERS offers to a worked client. ERS states that all of
+    these applications "use data services developed and hosted by ERS as their map content
+    source", and directs developers to browse them to discover which service backs which map -
+    the atlas UI is effectively the human-readable index of the geospatial API.
+  applications:
+    - name: Atlas of Rural and Small-Town America
+      url: https://www.ers.usda.gov/data-products/atlas-of-rural-and-small-town-america
+      backing_services:
+        - Rural_Atlas_Data/County_Classifications
+        - Rural_Atlas_Data/Income
+        - Rural_Atlas_Data/Jobs
+        - Rural_Atlas_Data/People
+        - Rural_Atlas_Data/Veterans
+    - name: Food Environment Atlas
+      url: https://www.ers.usda.gov/data-products/food-environment-atlas
+      backing_services:
+        - Hosted/Access_25
+        - Hosted/Assistance25
+        - Hosted/Prices__Taxes25
+        - Hosted/Health25
+        - Hosted/Local25_2
+        - Hosted/Restaurants25
+        - Hosted/Socioeconomic25
+        - Hosted/Insecurity25
+        - Hosted/Stores25
+    - name: Food Access Research Atlas
+      url: https://www.ers.usda.gov/data-products/food-access-research-atlas
+      backing_services:
+        - FARA/FARA_2015
+        - FARA/FARA_2019
+        - FARA/FARA_2025_StraightLine
+        - FARA/FARA_2025_DrivingDistance
+third_party_clients:
+  note: >-
+    ERS explicitly supports desktop GIS clients as first-class consumers - "Browse the portal at
+    gisportal.ers.usda.gov to select services... Use ArcGIS Pro catalog to browse the portal
+    listed above." That is a real integration path, but it is Esri's client, not an ERS
+    component.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

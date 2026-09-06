@@ -1,0 +1,117 @@
+generated: '2026-09-06'
+method: derived
+status: candidate
+source: >-
+  No MCP server exists. Searched the ERS developer pages
+  (https://www.ers.usda.gov/developer/), both ERS GitHub organizations (USDA-ERS,
+  USDA-REE-ERS), the npm registry and the open web on 2026-09-06 and found nothing first-party.
+  The tool list below is DERIVED from the resources ERS documents at
+  https://www.ers.usda.gov/developer/data-apis/arms-data-api and the ArcGIS service catalog at
+  https://gisportal.ers.usda.gov/server/rest/services?f=json - it is a proposal of what a
+  server would expose, not a description of one that exists.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  Candidate MCP tool surface for the ERS APIs. NOBODY SHIPS A SERVER - not ERS, not USDA, not a
+  third party. Recorded as a candidate because the ARMS API is unusually well suited to one:
+  seven resources, a small controlled vocabulary that is itself retrievable at runtime, no
+  writes, no user data, and a single free key. The npm packages that surface in a "USDA MCP"
+  search wrap FoodData Central, a different USDA agency's API, and none of them touch ERS.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  auth_note: >-
+    Any server built against ARMS would need to hold a free api.data.gov key; the geospatial
+    services need no credential at all.
+  verified: derived
+tools:
+  - name: arms_list_years
+    rest: GET https://api.ers.usda.gov/data/arms/year
+    description: List every year for which ARMS survey data are available.
+    inputSchema: {}
+    confidence: high
+  - name: arms_list_states
+    rest: GET https://api.ers.usda.gov/data/arms/state
+    description: List all States with the metadata and variables available for each.
+    inputSchema: {}
+    confidence: high
+  - name: arms_list_reports
+    rest: GET|POST https://api.ers.usda.gov/data/arms/report
+    description: >-
+      List the eight tailored ARMS reports, or look one up by name, ID or keyword, with its
+      metadata and available variables.
+    inputs: [name, id, keyword]
+    confidence: high
+  - name: arms_list_variables
+    rest: GET|POST https://api.ers.usda.gov/data/arms/variable
+    description: List or search ARMS variables by ID, report, name or keyword.
+    inputs: [id, report, name, keyword]
+    confidence: high
+  - name: arms_list_categories
+    rest: GET|POST https://api.ers.usda.gov/data/arms/category
+    description: >-
+      List every breakdown category and its subcategories, or fetch one by name or by
+      comma-separated short ID.
+    inputs: [name, id]
+    confidence: high
+  - name: arms_list_farm_types
+    rest: GET|POST https://api.ers.usda.gov/data/arms/farmtype
+    description: List or search ARMS farm types by name, ID or keyword.
+    inputs: [name, id, keyword]
+    confidence: high
+  - name: arms_get_survey_data
+    rest: GET|POST https://api.ers.usda.gov/data/arms/surveydata
+    description: >-
+      Retrieve ARMS survey values. Requires year; requires at least one of report or variable.
+      Optionally filtered by state and cross-tabulated by category, category_value, category2
+      and farmtype.
+    inputs: [year, state, report, variable, category, category_value, category2, farmtype]
+    required: [year]
+    one_of: [report, variable]
+    confidence: high
+  - name: ers_list_map_services
+    rest: GET https://gisportal.ers.usda.gov/server/rest/services?f=json
+    description: >-
+      List the ERS ArcGIS map, feature and image services, by folder. No credential required.
+    inputSchema: {}
+    confidence: high
+  - name: ers_describe_map_service
+    rest: GET https://gisportal.ers.usda.gov/server/rest/services/{folder}/{service}/{type}?f=json
+    description: >-
+      Describe one ERS map or feature service - its layers, geometry types, spatial reference,
+      supported query formats and record ceilings.
+    inputs: [folder, service, type]
+    confidence: high
+  - name: ers_query_map_layer
+    rest: GET https://gisportal.ers.usda.gov/server/rest/services/{folder}/{service}/MapServer/{layerId}/query
+    description: >-
+      Query features from one ERS map layer, returning JSON, GeoJSON or PBF. Honours the
+      service's published maxRecordCount of 2000 and pages with resultOffset/resultRecordCount.
+    inputs: [folder, service, layerId, where, outFields, geometry, f, resultOffset, resultRecordCount]
+    confidence: medium
+    note: >-
+      Parameter set is Esri's documented ArcGIS REST query interface, not something ERS
+      restates; confidence is medium because ERS defers to
+      https://developers.arcgis.com/rest/ rather than publishing its own parameter reference.
+schema_gap:
+  note: >-
+    inputSchema is deliberately left empty or reduced to a parameter name list. ERS publishes no
+    OpenAPI and no GraphQL SDL, and the one runtime self-description it does offer - HTTP
+    OPTIONS on each ARMS resource, which "returns the endpoint schema and details on input
+    fields and requirements" - is behind the api.data.gov key gate (403 API_KEY_MISSING
+    anonymously, probed 2026-09-06). A real server implementation should call OPTIONS on each
+    resource with a key and generate the inputSchemas from that response rather than from this
+    file.
+graphql:
+  endpoint: https://api.ers.usda.gov/data/arms/graphql
+  documented: true
+  schema_available: false
+  note: >-
+    An MCP server could plausibly be thinner over GraphQL than over the seven REST resources,
+    but the SDL is not published and anonymous introspection is refused by the gateway.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

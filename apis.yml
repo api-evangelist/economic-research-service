@@ -19,32 +19,45 @@ deliveryModel:
   generated: '2026-08-28'
   method: derived
 accessModel:
-  pricing: freemium
-  onboarding: unknown
+  pricing: free
+  onboarding: self-service
   trial: false
-  try_now: false
-  public: false
-  label: Freemium
-  confidence: medium
+  try_now: true
+  public: true
+  label: Free
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
+  generated: '2026-09-06'
   method: derived
+  note: >-
+    Re-derived from plans/economic-research-service-plans-pricing.yml after that artifact was
+    upgraded from a bulk-sweep scaffold to searched provider evidence on 2026-09-06. Both ERS
+    API surfaces are free United States Government public data with no paid tier; the ARMS API
+    needs a free api.data.gov key issued automatically from name and email, and api.data.gov
+    publishes a DEMO_KEY that can be called before registering. The geospatial services need no
+    credential at all.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/economic-research-service.png
 tags:
   - Agriculture
   - Economics
   - Federal-Government
   - Research
+  - Open-Data
+  - Geospatial
+  - Statistics
 tags_raw:
   - Agriculture
   - Economics
   - Federal Government
   - Research
+  - Open Data
+  - Geospatial
+  - Statistics
 url: https://www.ers.usda.gov/
 created: '2024-12-25'
-modified: '2026-04-28'
-position: Consuming
+modified: '2026-09-06'
+position: Producing
 access: 3rd-Party
 specificationVersion: '0.23'
 apis:
@@ -55,7 +68,7 @@ apis:
       integration into your own applications. Delivered via api.data.gov as
       REST endpoints. Requires an api.data.gov key.
     humanURL: https://www.ers.usda.gov/developer/data-apis
-    baseURL: https://api.ers.usda.gov
+    baseURL: https://api.ers.usda.gov/data
     tags:
       - Agriculture
       - Data
@@ -63,15 +76,25 @@ apis:
     properties:
       - url: https://www.ers.usda.gov/developer/data-apis
         type: Documentation
+      - url: https://www.ers.usda.gov/developer/data-apis/arms-data-api
+        type: APIReference
       - url: https://api.data.gov/signup/
-        type: Signup
+        type: SignUp
+      - url: https://www.ers.usda.gov/developer/data-apis/arms-data-api/updates-and-revisions
+        type: ChangeLog
+      - url: https://github.com/USDA-REE-ERS/ARMS-Data-API
+        type: SourceCode
+      - url: https://api.ers.usda.gov/data/arms/graphql
+        type: GraphQL
+      - url: authentication/economic-research-service-authentication.yml
+        type: Authentication
   - aid: economic-research-service:ers-geospatial-apis
     name: USDA ERS Geospatial APIs
     description: >-
       Integrate ERS map layers into the GIS package of your choice, on their
       own or mashed up with other geospatial data.
     humanURL: https://www.ers.usda.gov/developer/geospatial-apis
-    baseURL: https://www.ers.usda.gov
+    baseURL: https://gisportal.ers.usda.gov/server/rest/services
     tags:
       - Agriculture
       - Geospatial
@@ -79,6 +102,16 @@ apis:
     properties:
       - url: https://www.ers.usda.gov/developer/geospatial-apis
         type: Documentation
+      - url: https://gisportal.ers.usda.gov/server/rest/services
+        type: APIReference
+      - url: wsdl/economic-research-service-arcgis-server-catalog.wsdl
+        type: WSDL
+      - url: wsdl/economic-research-service-rural-atlas-income-mapserver.wsdl
+        type: WSDL
+      - url: wsdl/economic-research-service-fara-2025-straightline-mapserver.wsdl
+        type: WSDL
+      - url: wsdl/economic-research-service-soap-services.yml
+        type: WSDL
 common:
   - type: DomainSecurity
     url: security/economic-research-service-domain-security.yml
@@ -92,6 +125,53 @@ common:
     url: https://www.ers.usda.gov/developer/
   - url: https://www.ers.usda.gov/amber-waves
     type: Blog
+  - type: DeveloperPortal
+    url: https://www.ers.usda.gov/developer/
+  - type: TermsOfService
+    url: https://www.ers.usda.gov/developer/api-terms-of-service
+  - type: PrivacyPolicy
+    url: https://www.ers.usda.gov/privacy/privacy-statement
+  - type: Support
+    url: https://www.ers.usda.gov/contact-us
+  - type: SourceCode
+    url: https://github.com/USDA-REE-ERS
+  - type: Twitter
+    url: https://x.com/USDA_ERS
+  - type: Conformance
+    url: conformance/economic-research-service-conformance.yml
+  - type: Authentication
+    url: authentication/economic-research-service-authentication.yml
+  - type: Conventions
+    url: conventions/economic-research-service-conventions.yml
+  - type: ErrorCatalog
+    url: errors/economic-research-service-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/economic-research-service-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/economic-research-service-changelog.yml
+  - type: RateLimits
+    url: rate-limits/economic-research-service-rate-limits.yml
+  - type: Plans
+    url: plans/economic-research-service-plans-pricing.yml
+  - type: Packages
+    url: packages/economic-research-service-packages.yml
+  - type: Components
+    url: components/economic-research-service-components.yml
+  - type: DataModel
+    url: data-model/economic-research-service-data-model.yml
+  - type: Sandbox
+    url: sandbox/economic-research-service-sandbox.yml
+  - type: X-MCPServerCandidate
+    url: mcp/economic-research-service-mcp.yml
+  - type: LLMsTxt
+    url: llms/economic-research-service-llms.txt
+  - type: FinOps
+    url: finops/economic-research-service-finops.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-06'
+  status: enriched
+  artifacts_added: 17
+  pass: local-v3

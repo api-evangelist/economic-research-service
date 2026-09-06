@@ -1,0 +1,116 @@
+generated: '2026-09-06'
+method: probed
+source: >-
+  https://gisportal.ers.usda.gov/server/rest/services?f=json enumerated the ArcGIS Server
+  service catalog; every MapServer was then probed for its SOAP contract at
+  <service>/MapServer?wsdl. ERS's own Geospatial APIs page
+  (https://www.ers.usda.gov/developer/geospatial-apis) states "JSON and SOAP interfaces are
+  also available" and links to this same gisportal.ers.usda.gov host.
+provider: Economic Research Service
+providerId: economic-research-service
+specification: WSDL 1.1 (SOAP 1.1 / 1.2)
+description: >-
+  Inventory of the SOAP contracts ERS publishes for its geospatial map services. The services
+  run on ERS's own ArcGIS Enterprise host (gisportal.ers.usda.gov, ArcGIS Server 12.0.0); every
+  WSDL declares a soap:address on that host, which is what establishes ERS ownership. Each
+  MapServer exposes the same 55-operation Esri MapServer SOAP interface (Identify, Find,
+  ExportMapImage, QueryFeatureData, QueryRelatedRecords, GetLegendInfo and so on); the server
+  root exposes a 7-operation Catalog service. FeatureServer endpoints do NOT answer ?wsdl
+  (HTTP 400) - they are ArcGIS REST/JSON only.
+ownership_note: >-
+  The WSDL targetNamespace is Esri's (http://www.esri.com/schemas/ArcGIS/3.6.0) because ArcGIS
+  Server generates the contract, but every soap:address location is
+  https://gisportal.ers.usda.gov:443/server/services/... - an ERS-operated host named in ERS's
+  own developer documentation. The contract belongs to ERS; the schema vocabulary belongs to
+  the software vendor.
+saved:
+  - file: economic-research-service-arcgis-server-catalog.wsdl
+    url: https://gisportal.ers.usda.gov/server/services?wsdl
+    status: 200
+    service: Catalog
+    operations: 7
+  - file: economic-research-service-rural-atlas-income-mapserver.wsdl
+    url: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/Income/MapServer?wsdl
+    status: 200
+    service: DynamicMappingHost_MapServer
+    operations: 55
+  - file: economic-research-service-fara-2025-straightline-mapserver.wsdl
+    url: https://gisportal.ers.usda.gov/server/services/FARA/FARA_2025_StraightLine/MapServer?wsdl
+    status: 200
+    service: DynamicMappingHost_MapServer
+    operations: 55
+note: >-
+  Three WSDLs are stored verbatim as exemplars. All seventeen MapServer WSDLs below are byte-
+  for-byte the same 55-operation Esri contract apart from the service path in soap:address, so
+  storing all seventeen would add roughly 5 MB of duplicate XML without adding a single
+  distinct operation. Every endpoint was probed on 2026-09-06 and its status is recorded here.
+endpoints:
+  - service: Rural_Atlas_Data/County_Classifications
+    wsdl: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/County_Classifications/MapServer?wsdl
+    status: 200
+  - service: Rural_Atlas_Data/Income
+    wsdl: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/Income/MapServer?wsdl
+    status: 200
+  - service: Rural_Atlas_Data/Jobs
+    wsdl: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/Jobs/MapServer?wsdl
+    status: 200
+  - service: Rural_Atlas_Data/People
+    wsdl: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/People/MapServer?wsdl
+    status: 200
+  - service: Rural_Atlas_Data/Veterans
+    wsdl: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/Veterans/MapServer?wsdl
+    status: 200
+  - service: FARA/Boundaries
+    wsdl: https://gisportal.ers.usda.gov/server/services/FARA/Boundaries/MapServer?wsdl
+    status: 200
+  - service: FARA/FARA_2010
+    wsdl: https://gisportal.ers.usda.gov/server/services/FARA/FARA_2010/MapServer?wsdl
+    status: 200
+  - service: FARA/FARA_2015
+    wsdl: https://gisportal.ers.usda.gov/server/services/FARA/FARA_2015/MapServer?wsdl
+    status: 200
+  - service: FARA/FARA_2019
+    wsdl: https://gisportal.ers.usda.gov/server/services/FARA/FARA_2019/MapServer?wsdl
+    status: 200
+  - service: FARA/FARA_2025_DrivingDistance
+    wsdl: https://gisportal.ers.usda.gov/server/services/FARA/FARA_2025_DrivingDistance/MapServer?wsdl
+    status: 200
+  - service: FARA/FARA_2025_StraightLine
+    wsdl: https://gisportal.ers.usda.gov/server/services/FARA/FARA_2025_StraightLine/MapServer?wsdl
+    status: 200
+  - service: Atlas_Reference_Data/Filter
+    wsdl: https://gisportal.ers.usda.gov/server/services/Atlas_Reference_Data/Filter/MapServer?wsdl
+    status: 200
+  - service: Atlas_Reference_Data/Filter_2019
+    wsdl: https://gisportal.ers.usda.gov/server/services/Atlas_Reference_Data/Filter_2019/MapServer?wsdl
+    status: 200
+  - service: Atlas_Reference_Data/Reference
+    wsdl: https://gisportal.ers.usda.gov/server/services/Atlas_Reference_Data/Reference/MapServer?wsdl
+    status: 200
+  - service: Atlas_Reference_Data/Reference_2019
+    wsdl: https://gisportal.ers.usda.gov/server/services/Atlas_Reference_Data/Reference_2019/MapServer?wsdl
+    status: 200
+  - service: Atlas_Reference_Data/Reference_Labels
+    wsdl: https://gisportal.ers.usda.gov/server/services/Atlas_Reference_Data/Reference_Labels/MapServer?wsdl
+    status: 200
+  - service: GenCharicteristics_mapimage_new
+    wsdl: https://gisportal.ers.usda.gov/server/services/GenCharicteristics_mapimage_new/MapServer?wsdl
+    status: 200
+  - service: StraightLine_mapimage_new
+    wsdl: https://gisportal.ers.usda.gov/server/services/StraightLine_mapimage_new/MapServer?wsdl
+    status: 499
+    note: Server closed the connection without a response on 2026-09-06; the REST endpoint for
+      this service is linked from the ERS Geospatial APIs page and answers normally.
+  - service: drivingdistance_mapimage_newest
+    wsdl: https://gisportal.ers.usda.gov/server/services/drivingdistance_mapimage_newest/MapServer?wsdl
+    status: 499
+    note: Server closed the connection without a response on 2026-09-06; the REST endpoint for
+      this service is linked from the ERS Geospatial APIs page and answers normally.
+not_available:
+  - surface: FeatureServer SOAP
+    example: https://gisportal.ers.usda.gov/server/services/Hosted/Access_25/FeatureServer?wsdl
+    status: 400
+    note: ArcGIS FeatureServer services do not expose a SOAP endpoint; they are REST/JSON only.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

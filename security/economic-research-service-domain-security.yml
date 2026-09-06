@@ -1,4 +1,4 @@
-generated: '2026-07-11'
+generated: '2026-09-06'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
@@ -11,16 +11,16 @@ hosts:
 - host: api.ers.usda.gov
   https: true
   tls_version: TLSv1.3
-  cert_expires: Oct  3 23:20:40 2026 GMT
+  cert_expires: Dec  2 23:20:51 2026 GMT
   hsts: null
 domains:
 - domain: usda.gov
   dnssec: true
   caa:
-  - 0 issue "digicert.com"
   - 0 iodef "mailto:icam_as_notify@ocio.usda.gov"
   - 0 issue "globalsign.com"
   - 0 issue "letsencrypt.org"
+  - 0 issue "digicert.com"
   spf: true
   dmarc: true
   dmarc_policy: reject

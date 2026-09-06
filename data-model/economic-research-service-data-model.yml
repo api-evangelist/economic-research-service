@@ -1,0 +1,187 @@
+generated: '2026-09-06'
+method: derived
+source: >-
+  Derived from the ERS ARMS API documentation at
+  https://www.ers.usda.gov/developer/data-apis/arms-data-api and the first-party README at
+  https://github.com/USDA-REE-ERS/ARMS-Data-API/blob/master/README.md, plus the ArcGIS service
+  metadata at https://gisportal.ers.usda.gov/server/rest/services?f=json. NOT derived from an
+  OpenAPI - ERS publishes none - so field-level types are absent and only the entity graph the
+  documentation states explicitly is recorded here.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  Entity-relationship model for the ERS ARMS Data API. ARMS has an unusually clean shape for a
+  government data API: one fact resource (surveydata) and six dimension resources that exist
+  purely to enumerate the legal values of its parameters. Every dimension is retrievable at
+  runtime, which is what makes the API navigable in practice despite having no contract - an
+  agent can discover the whole vocabulary with six GETs before composing a query.
+confidence: medium
+confidence_note: >-
+  The entities, their resources and the parameter bindings below are stated verbatim in ERS
+  documentation. What is NOT known without a key: the field names and types inside each
+  response, the shape of the "info" envelope, and the cardinality of the category/category2
+  pairing. Those are deliberately left unstated rather than guessed.
+entities:
+  - name: surveydata
+    resource: /arms/surveydata
+    role: fact
+    methods: [GET, POST]
+    required_inputs:
+      - year
+    conditional_inputs:
+      note: at least one of "report" or "variable" is required
+      one_of: [report, variable]
+    optional_inputs: [state, category, category_value, category2, farmtype]
+    known_fields:
+      - decimal_display
+    known_fields_note: >-
+      Only field confirmed by ERS's own changelog (added 2019-08-29, "indicating the proper
+      number of decimals to display for the value"). The rest of the record is undocumented.
+    relationships:
+      - type: belongs_to
+        target: year
+        via: year
+      - type: belongs_to
+        target: state
+        via: state
+      - type: belongs_to
+        target: report
+        via: report
+      - type: belongs_to
+        target: variable
+        via: variable
+      - type: belongs_to
+        target: category
+        via: category
+      - type: belongs_to
+        target: category
+        via: category2
+        note: A second, independent category axis used to cross-tabulate the same measure.
+      - type: belongs_to
+        target: farmtype
+        via: farmtype
+  - name: state
+    resource: /arms/state
+    role: dimension
+    methods: [GET]
+    description: >-
+      All States, with the metadata and variables available for each. Accepts the literal value
+      "all" when used as a surveydata parameter.
+    relationships:
+      - type: has_many
+        target: surveydata
+        via: state
+  - name: year
+    resource: /arms/year
+    role: dimension
+    methods: [GET]
+    description: All years for which ARMS data are available. Coverage spans 1996 to the present.
+    relationships:
+      - type: has_many
+        target: surveydata
+        via: year
+  - name: report
+    resource: /arms/report
+    role: dimension
+    methods: [GET, POST]
+    description: >-
+      Tailored ARMS reports, each a named collection of variables, with metadata and the
+      variables available for each. Searchable by name, ID or keyword.
+    known_fields:
+      - desc
+    known_fields_note: '"desc" added 2019-08-29 per the ERS updates page.'
+    members:
+      - Farm Business Balance Sheet
+      - Farm Business Income Statement
+      - Farm Business Financial Ratios
+      - Structural Characteristics
+      - Farm Business Debt Repayment Capacity
+      - Government Payments
+      - Operator Household Income
+      - Operator Household Balance Sheet
+    relationships:
+      - type: has_many
+        target: variable
+        via: report
+      - type: has_many
+        target: surveydata
+        via: report
+  - name: variable
+    resource: /arms/variable
+    role: dimension
+    methods: [GET, POST]
+    description: >-
+      The measures themselves, with metadata for each. Searchable by ID, report, name and
+      keyword. An exhaustive listing with detailed descriptions is published separately as
+      AllVariables.csv.
+    external_reference: https://www.ers.usda.gov/sites/default/files/images/arms-all-variables-december-2023.csv
+    relationships:
+      - type: belongs_to
+        target: report
+        via: report
+      - type: has_many
+        target: surveydata
+        via: variable
+  - name: category
+    resource: /arms/category
+    role: dimension
+    methods: [GET, POST]
+    description: >-
+      "Meta tags that provide context for the data" - the breakdown axes. Returns categories and
+      their subcategories with metadata and available variables. Queryable by name, or by
+      comma-separated short IDs.
+    known_fields:
+      - description
+    known_fields_note: '"description" added 2019-08-29 per the ERS updates page.'
+    members:
+      - {id: sal, name: Economic Class}
+      - {id: ftyppl, name: Farm Typology}
+      - {id: age, name: Operator age}
+      - {id: reg, name: Farm Resource Region}
+      - {id: n5reg, name: NASS region}
+      - {id: spec, name: Production Specialty}
+    members_note: >-
+      Short IDs are quoted from the ERS documentation. Category membership changes over time -
+      the Farm Typology values are split into a 1996-2011 set and a 2012-present set - so
+      category values are year-dependent and should be read from /arms/category rather than
+      hard-coded.
+    relationships:
+      - type: has_many
+        target: surveydata
+        via: category
+      - type: has_many
+        target: surveydata
+        via: category2
+  - name: farmtype
+    resource: /arms/farmtype
+    role: dimension
+    methods: [GET, POST]
+    description: All farm types, searchable by keyword, name or ID.
+    known_fields:
+      - desc
+    known_fields_note: '"desc" added 2019-08-29 per the ERS updates page.'
+    relationships:
+      - type: has_many
+        target: surveydata
+        via: farmtype
+geospatial_model:
+  note: >-
+    The geospatial surface has a separate and fully self-describing model that needs no
+    derivation - every ArcGIS service publishes its own layers, fields, geometry type, spatial
+    reference and domains at ?f=json. It is a layer-per-measure design: one service per atlas
+    category, one Feature Layer per indicator (for example
+    Rural_Atlas_Data/Income exposes "Median household income (In 2021 dollars), 2017-21" and
+    "Per capita Income..." as separate polygon layers). Geography is county-level for most
+    services and Census-tract level for the Food Access Research Atlas.
+  self_description: https://gisportal.ers.usda.gov/server/rest/services/Rural_Atlas_Data/Income/MapServer?f=json
+  spatial_references_in_use:
+    - NAD 1983
+    - WGS 84
+    - Web Mercator
+    - USA Contiguous Albers Equal Area Conic USGS
+  spatial_reference_note: >-
+    Four different spatial references across the published services, stated per service on the
+    ERS Geospatial APIs page. A consumer mashing two ERS services together has to reproject.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,107 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  npm registry search (registry.npmjs.org), PyPI, CRAN (crandb.r-pkg.org), the ERS developer
+  pages, and both ERS GitHub organizations (github.com/USDA-ERS and github.com/USDA-REE-ERS),
+  all checked 2026-09-06.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  ERS SHIPS NO CLIENT SDK, in any language, on any registry. What exists is a set of
+  first-party code SAMPLES on GitHub - not installable libraries - last touched in 2013, plus
+  one third-party R package on CRAN that has not been released since 2020. The ERS data-apis
+  page still tells developers "Code snippets for the ARMS API are available in R (or REST)"
+  without linking to them.
+sdk_count: 0
+official_sdk_count: 0
+packages:
+  - name: rarms
+    registry: cran
+    url: https://cran.r-project.org/package=rarms
+    language: R
+    official: false
+    version: 1.0.0
+    published: '2020-01-23'
+    title: Access Data from the USDA ARMS Data API
+    maintainer: Bowen Chen <bwchen0719@gmail.com>
+    license: GPL (>= 2)
+    note: >-
+      Third-party, not ERS. The only installable client for the ARMS API on any registry.
+      Version 1.0.0 is the only release, dated 2020-01-23 - six and a half years old at the time
+      of this check, and older than every ARMS data release from 2020 onward. Metadata read from
+      https://crandb.r-pkg.org/rarms.
+  - name: USDA-REE-ERS/data-apis
+    registry: none
+    url: https://github.com/USDA-REE-ERS/data-apis
+    language: multiple
+    official: true
+    kind: code-samples
+    version: null
+    published: '2013-12-12'
+    note: >-
+      First-party ERS repository of API code samples - dotNet-code.md, python-code.md,
+      ruby-code.md, jquery-code.md - and nothing else. NOT A PACKAGE: there is no registry
+      entry, no install command, no versioning and no build; a consumer copies the snippet.
+      version is null because the distribution has no version to read. Last push 2013-12-12;
+      the repo homepage still points at http://www.ers.usda.gov/developer/data-apis.aspx, a URL
+      the current site no longer serves. Predates the ARMS API (2019) entirely, so these
+      samples describe an earlier ERS data API.
+  - name: USDA-REE-ERS/ARMS-Data-API
+    registry: none
+    url: https://github.com/USDA-REE-ERS/ARMS-Data-API
+    language: markdown
+    official: true
+    kind: documentation
+    version: null
+    published: '2020-12-18'
+    note: >-
+      First-party ERS repository holding the ARMS API README - the same prose that is on
+      ers.usda.gov, with no spec, no schema and no code. Listed here because it is the only
+      place ERS puts anything API-shaped under version control. Last push 2020-12-18. Its
+      AllVariables.csv link still points at the December 2020 file while the live docs link the
+      December 2023 one.
+  - name: USDA-REE-ERS/widgets
+    registry: none
+    url: https://github.com/USDA-REE-ERS/widgets
+    language: javascript
+    official: true
+    kind: embeddable-component
+    version: null
+    published: '2013-11-29'
+    note: >-
+      "Source code for widgets using ERS APIs" - the Charts of Note widget. An embeddable UI
+      surface rather than a client library; see components/economic-research-service-components.yml.
+      Unpinned and unversioned; a consumer cannot tell what they would be getting. Last push
+      2013-11-29.
+registries_checked:
+  - registry: npm
+    result: none
+    note: >-
+      No first-party ERS or USDA-ERS package. Searches for "usda", "usda-ers" and "ers-usda"
+      returned only unrelated third-party work (a USD/OpenUSD file parser, FoodData Central
+      wrappers, nutrition MCP servers) - none of which touch the ERS APIs.
+  - registry: pypi
+    result: none
+    note: 'pypi.org/pypi/usda-ers/json returned 404.'
+  - registry: cran
+    result: 'one third-party package (rarms)'
+  - registry: rubygems
+    result: none
+    note: >-
+      Not published, despite ERS shipping Ruby sample code in USDA-REE-ERS/data-apis. The
+      sample was never turned into a gem.
+  - registry: nuget
+    result: none
+    note: >-
+      Not published, despite ERS shipping .NET sample code in USDA-REE-ERS/data-apis.
+  - registry: maven
+    result: none
+  - registry: go
+    result: none
+  - registry: crates.io
+    result: none
+  - registry: packagist
+    result: none
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

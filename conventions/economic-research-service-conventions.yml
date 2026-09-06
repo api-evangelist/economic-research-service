@@ -1,0 +1,178 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.ers.usda.gov/developer/data-apis/arms-data-api,
+  https://github.com/USDA-REE-ERS/ARMS-Data-API/blob/master/README.md,
+  https://api.data.gov/docs/developer-manual/,
+  https://www.ers.usda.gov/developer/geospatial-apis, and live probes of
+  https://api.ers.usda.gov/data/arms/* and
+  https://gisportal.ers.usda.gov/server/rest/services?f=json on 2026-09-06.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  Cross-cutting runtime semantics for the ERS API surfaces. Both surfaces are READ-ONLY public
+  data. That single fact settles most of this document: there is nothing to make idempotent,
+  nothing to reverse and nothing to rehearse, and those dimensions are honestly not-applicable
+  rather than missing. What an agent does need here - and mostly does not get - is a machine-
+  readable description of the query surface, pagination semantics for large result sets, and a
+  way to tell a rate-limit block from an outage.
+write_surface:
+  exists: false
+  note: >-
+    The ARMS API accepts POST, but POST is used only to carry a query body; every documented
+    resource is a retrieval. The API Terms of Service confirm the intent: consumers may
+    "search, display, analyze, retrieve, view, and otherwise 'get' information from ERS data."
+    The ArcGIS map and feature services are published read-only; editing capabilities are not
+    advertised on the public services (capabilities on the probed MapServer read "Map,Query,Data").
+authentication:
+  style: api-key
+  detail: authentication/economic-research-service-authentication.yml
+  summary: >-
+    ARMS: free api.data.gov key as ?api_key=, X-Api-Key, or HTTP basic username. Geospatial:
+    anonymous.
+idempotency:
+  coverage: na
+  scope: []
+  header: null
+  retention: null
+  note: >-
+    Not applicable: there is no mutating operation on either surface, so there is no replay to
+    protect against. Repeating any ARMS or ArcGIS request returns the same representation of
+    the same data. This is an honest na, not an absent mechanism.
+reversibility:
+  grade: na
+  reversal_operations: []
+  note: >-
+    Not applicable for the same reason. No ERS API operation changes state that a consumer
+    could need to take back. The only irreversible thing on this surface is ERS's own: a
+    breaking change to the response shape shipped once with no notice (2019-08-29, see
+    changelog/economic-research-service-changelog.yml), and consumers have no mechanism to pin
+    or roll back to the prior shape because there is no version.
+dry_run_mode:
+  supported: na
+  note: Not applicable to a read-only surface.
+pagination:
+  arms:
+    documented: false
+    style: null
+    params: []
+    response_fields: []
+    note: >-
+      ERS documents no pagination for the ARMS API. /arms/surveydata can be asked for many
+      years, all states and multiple categories in one call, and nothing in the documentation
+      says what happens when the result is large - no limit, no offset, no cursor, no total
+      count, no truncation signal. The result envelope is documented to carry an "info" section
+      (two of whose properties were removed in 2019) but its fields are not enumerated. An
+      agent must discover the shape by calling with a key.
+  geospatial:
+    documented: partial
+    style: offset
+    params:
+      - resultOffset
+      - resultRecordCount
+      - returnCountOnly
+    response_fields:
+      - exceededTransferLimit
+    note: >-
+      Standard ArcGIS REST query paging, documented by Esri rather than by ERS. The per-service
+      ceiling is published in each service's own JSON: maxRecordCount 2000 on the MapServer
+      probed. ERS links to https://developers.arcgis.com/rest/ instead of restating it.
+filtering_and_query:
+  note: >-
+    ARMS uses a small controlled vocabulary rather than a generic filter language. Multi-value
+    fields are comma-separated and multi-word values use "+" for the space, e.g.
+    ?year=2015,2016&state=all&report=income+statement&farmtype=operator+households. The
+    vocabularies themselves are retrievable at runtime - /arms/state, /arms/year, /arms/report,
+    /arms/variable, /arms/category and /arms/farmtype exist to enumerate the legal values of
+    the /arms/surveydata parameters. That is a genuinely agent-friendly design; it is just not
+    described anywhere a machine can read.
+  self_description:
+    mechanism: HTTP OPTIONS
+    note: >-
+      "Each endpoint also supports the OPTIONS method that returns the endpoint schema and
+      details on input fields and requirements, such as format." This is the closest thing ERS
+      has to a machine-readable contract - a per-endpoint schema served at runtime - but it is
+      behind the api.data.gov key gate (OPTIONS on /arms/surveydata returned 403
+      API_KEY_MISSING on 2026-09-06), so it cannot be harvested anonymously and cannot be
+      published as a spec.
+    source: https://www.ers.usda.gov/developer/data-apis/arms-data-api
+expansion_and_sparse_fields:
+  supported: false
+  note: Not offered on either surface.
+metadata:
+  supported: false
+  note: >-
+    No consumer-supplied metadata. ERS-supplied descriptive metadata is generous, though: every
+    ARMS enumeration resource returns metadata and the variables available for that entity, and
+    a bulk AllVariables.csv is published for offline reference.
+request_tracing:
+  header: x-api-umbrella-request-id
+  returned_on: every api.ers.usda.gov response (gateway-supplied)
+  documented_by_provider: false
+  note: >-
+    Observed on live responses 2026-09-06, alongside x-vcap-request-id. Neither is documented by
+    ERS or by api.data.gov, but x-api-umbrella-request-id is the identifier to quote when
+    reporting a gateway problem.
+versioning:
+  scheme: none
+  detail: lifecycle/economic-research-service-lifecycle.yml
+error_envelope:
+  content_type: application/json
+  shape: '{"error": {"code": "<CODE>", "message": "<text>"}}'
+  rfc9457: false
+  detail: errors/economic-research-service-problem-types.yml
+  note: >-
+    Gateway errors only. ERS publishes no catalog for errors raised by ARMS itself past the
+    gateway.
+rate_limit_signaling:
+  headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+  retry_after: false
+  status_on_exhaustion: 429
+  detail: rate-limits/economic-research-service-rate-limits.yml
+content_negotiation:
+  arms:
+    formats:
+      - json
+    note: >-
+      "The data in the API are available in JSON format." Gateway ERRORS can also be returned as
+      XML, CSV or HTML depending on the detected request format, but the data itself is JSON.
+      Bulk files are offered as a separate download channel and need no key.
+  geospatial:
+    formats:
+      - json
+      - geoJSON
+      - PBF
+      - PNG32
+      - PNG24
+      - JPG
+      - TIFF
+      - PDF
+      - SVG
+      - BMP
+      - GIF
+    note: >-
+      supportedQueryFormats "JSON, geoJSON, PBF" and supportedImageFormatTypes read from
+      https://gisportal.ers.usda.gov/server/rest/services/Rural_Atlas_Data/Income/MapServer?f=json
+      on 2026-09-06. Format is selected with the ?f= query parameter.
+cors:
+  arms:
+    enabled: true
+    note: 'access-control-allow-origin: * observed on api.ers.usda.gov responses 2026-09-06.'
+transport:
+  https_only: true
+  note: >-
+    api.data.gov returns HTTPS_REQUIRED (400) for plaintext requests, and the ERS Geospatial
+    APIs page states "All map services are accessible only via https."
+attribution:
+  required: true
+  text: >-
+    "This product uses the ERS Data API but is not endorsed or certified by ERS."
+  source: https://www.ers.usda.gov/developer/api-terms-of-service
+  note: >-
+    A runtime obligation an agent integrator has to honour in the consuming application, not
+    just a licence footnote.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

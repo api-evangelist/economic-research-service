@@ -1,0 +1,131 @@
+generated: '2026-09-06'
+method: probed
+source: >-
+  Anonymous HTTPS probes on 2026-09-06 of every host this record knows: the registrable domain
+  usda.gov and www, the ERS site host, the ARMS API host named in apis.yml, and the ArcGIS
+  geospatial host named on the ERS Geospatial APIs page.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  Probe of the standard /.well-known/ discovery documents. NOTHING WAS FOUND. Every path on
+  every ERS-controlled host returned 404. The usda.gov apex answered 200 for every path
+  probed, including paths that cannot all exist - it serves the same 1,341-byte HTML redirect
+  shell for any /.well-known/* URL - so those 200s are a catch-all, not documents, and are
+  recorded as misses. No WellKnown or SecurityTxt pointer is wired into apis.yml as a result.
+hosts:
+  - host: www.ers.usda.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: ers.usda.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: api.ers.usda.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: gisportal.ers.usda.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: usda.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: >-
+          NOT A DOCUMENT. Returns a 1,341-byte HTML shell, identical for every /.well-known/*
+          path probed including ones that cannot exist. Treated as a miss.
+      - path: /.well-known/openid-configuration
+        status: 200
+        note: Same 1,341-byte HTML catch-all shell. Treated as a miss.
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        note: Same 1,341-byte HTML catch-all shell. Treated as a miss.
+      - path: /.well-known/api-catalog
+        status: 200
+        note: Same 1,341-byte HTML catch-all shell. Treated as a miss.
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        note: Same 1,341-byte HTML catch-all shell. Treated as a miss.
+      - path: /.well-known/agent-card.json
+        status: 200
+        note: Same 1,341-byte HTML catch-all shell. Treated as a miss.
+      - path: /.well-known/agent.json
+        status: 200
+        note: Same 1,341-byte HTML catch-all shell. Treated as a miss.
+  - host: www.usda.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+        note: Akamai "Access Denied" edge block on every path, including with a browser
+          User-Agent. Not readable; recorded as unverified rather than served.
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+related_probes:
+  - url: https://api.data.gov/.well-known/security.txt
+    status: 404
+    note: >-
+      api.data.gov is the API management platform ERS registers keys through, not an ERS host.
+      Probed for completeness; no security.txt.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

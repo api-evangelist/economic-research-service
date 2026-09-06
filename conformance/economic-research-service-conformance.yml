@@ -1,0 +1,169 @@
+generated: '2026-09-06'
+method: probed
+source: >-
+  Live probes on 2026-09-06 of https://api.ers.usda.gov/data/arms/*,
+  https://gisportal.ers.usda.gov/server/rest/* and
+  https://gisportal.ers.usda.gov/server/services/*, plus the ERS developer documentation at
+  https://www.ers.usda.gov/developer/ and the platform documentation at
+  https://api.data.gov/docs/developer-manual/.
+provider: Economic Research Service
+providerId: economic-research-service
+description: >-
+  Standards conformance for the ERS API surfaces, asserted only where a probe or a published
+  document supports it. The headline finding is a split: the geospatial surface conforms to a
+  real, self-describing industry contract standard (WSDL 1.1 / SOAP, published by the server
+  itself), while the ARMS data surface conforms to no contract standard at all - it is a
+  documented-in-prose JSON API with a runtime OPTIONS schema locked behind a key.
+conformance:
+  - id: wsdl-1.1
+    label: WSDL 1.1
+    conforms: true
+    evidence: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/Income/MapServer?wsdl
+    note: >-
+      HTTP 200, 290 KB, root element <definitions> in the WSDL 1.1 namespace
+      http://schemas.xmlsoap.org/wsdl/, 55 operations, soap:address on
+      gisportal.ers.usda.gov. Seventeen ERS map services serve one. Saved verbatim under wsdl/.
+  - id: soap-1.1
+    label: SOAP 1.1 / 1.2 bindings
+    conforms: true
+    evidence: https://gisportal.ers.usda.gov/server/services?wsdl
+    note: >-
+      The service catalog WSDL binds a 7-operation Catalog service; each MapServer WSDL binds
+      the DynamicMappingHost_MapServer port. ERS's own Geospatial APIs page states "JSON and
+      SOAP interfaces are also available".
+  - id: arcgis-rest
+    label: Esri ArcGIS Server REST API
+    conforms: true
+    evidence: https://gisportal.ers.usda.gov/server/rest/services?f=json
+    note: >-
+      HTTP 200. Self-describing service directory: currentVersion 12, fullVersion 12.0.0,
+      folders and service types enumerated, and every service exposes its own layer, field and
+      capability metadata at ?f=json. This is a de-facto geospatial industry contract - a
+      consumer with any ArcGIS client integrates with no bespoke work - and it is the reason
+      the geospatial surface is more machine-readable than the data surface despite having no
+      OpenAPI either.
+  - id: geojson
+    label: GeoJSON (RFC 7946) output
+    conforms: true
+    evidence: https://gisportal.ers.usda.gov/server/rest/services/Rural_Atlas_Data/Income/MapServer?f=json
+    note: 'supportedQueryFormats reads "JSON, geoJSON, PBF".'
+  - id: graphql
+    label: GraphQL
+    conforms: true
+    evidence: https://www.ers.usda.gov/developer/data-apis/arms-data-api
+    note: >-
+      ERS documents a GraphQL endpoint at https://api.ers.usda.gov/data/arms/graphql. Presence
+      is documented; the SCHEMA could not be verified - an anonymous introspection POST of
+      {__schema{queryType{name}}} on 2026-09-06 returned HTTP 403 API_KEY_MISSING from the
+      api.data.gov gateway. The SDL requires an authenticated introspection and is not
+      published anywhere.
+  - id: openapi
+    label: OpenAPI / Swagger
+    conforms: false
+    evidence: https://api.ers.usda.gov/openapi.json
+    note: >-
+      404 (JSON, from the gateway). /openapi.yaml, /swagger.json, /api-docs and /docs on
+      api.ers.usda.gov all 404 as well, and /openapi.json on www.ers.usda.gov returns the site's
+      404 page. There is no OpenAPI for the ARMS API anywhere, first- or second-party. ERS's own
+      GitHub org (USDA-REE-ERS/ARMS-Data-API) publishes the same prose README, not a spec.
+  - id: options-schema
+    label: Runtime endpoint schema over HTTP OPTIONS
+    conforms: true
+    evidence: https://www.ers.usda.gov/developer/data-apis/arms-data-api
+    gated: true
+    note: >-
+      ERS documents that "each endpoint also supports the OPTIONS method that returns the
+      endpoint schema and details on input fields and requirements, such as format." A real
+      self-description mechanism, but gated: OPTIONS https://api.ers.usda.gov/data/arms/surveydata
+      returned 403 API_KEY_MISSING anonymously on 2026-09-06. Not a substitute for a published
+      contract, because it cannot be read before you hold a key.
+  - id: ogc-api-features
+    label: OGC API - Features
+    conforms: false
+    evidence: https://gisportal.ers.usda.gov/server/rest/services/Rural_Atlas_Data/Income/MapServer?f=json
+    note: >-
+      No OGC API surface. The MapServer reports supportedExtensions as an empty string, meaning
+      no OGC extension is enabled on the server.
+  - id: ogc-wms
+    label: OGC WMS (GetCapabilities)
+    conforms: false
+    evidence: https://gisportal.ers.usda.gov/server/services/Rural_Atlas_Data/Income/MapServer/WMSServer?service=WMS&request=GetCapabilities
+    note: >-
+      HTTP 400, ArcGIS Server error page, not a WMS_Capabilities document. The WMS extension is
+      not enabled. This is the notable geospatial gap: a Federal geospatial publisher serving
+      25+ map services entirely through a vendor-proprietary REST/SOAP interface with no open
+      OGC contract alongside it.
+  - id: ogc-wfs
+    label: OGC WFS (GetCapabilities)
+    conforms: false
+    evidence: https://gisportal.ers.usda.gov/server/services/Hosted/Access_25/FeatureServer/WFSServer?service=WFS&request=GetCapabilities
+    note: HTTP 400. The WFS extension is not enabled on the feature services either.
+  - id: rfc9457
+    label: RFC 9457 Problem Details
+    conforms: false
+    evidence: https://api.ers.usda.gov/data/arms/year
+    note: >-
+      Errors are a vendor JSON envelope {"error":{"code","message"}} served as application/json,
+      not application/problem+json. Observed live 2026-09-06.
+  - id: oauth2
+    label: OAuth 2.0
+    conforms: false
+    evidence: https://api.ers.usda.gov/.well-known/oauth-authorization-server
+    note: 404. Authentication is a static api.data.gov key; no OAuth anywhere on the surface.
+  - id: oidc
+    label: OpenID Connect
+    conforms: false
+    evidence: https://www.ers.usda.gov/.well-known/openid-configuration
+    note: 404 on every ERS host probed.
+  - id: rfc9309-robots
+    label: HTTPS-only transport
+    conforms: true
+    evidence: https://api.data.gov/docs/developer-manual/
+    note: >-
+      HTTPS_REQUIRED (400) is returned for plaintext requests to the gateway, and the ERS
+      Geospatial APIs page states "All map services are accessible only via https."
+  - id: idempotency
+    label: Idempotency keys
+    conforms: na
+    evidence: conventions/economic-research-service-conventions.yml
+    note: Not applicable - the surface is read-only. See the write_surface block in conventions/.
+  - id: pagination
+    label: Documented pagination
+    conforms: partial
+    evidence: https://gisportal.ers.usda.gov/server/rest/services/Rural_Atlas_Data/Income/MapServer?f=json
+    note: >-
+      Geospatial: standard ArcGIS resultOffset/resultRecordCount with a published
+      maxRecordCount of 2000. ARMS: nothing documented at all.
+domain_standards:
+  - id: dcat-us
+    label: DCAT-US / Project Open Data metadata (data.json)
+    conforms: false
+    evidence: https://www.ers.usda.gov/data.json
+    note: >-
+      404, as do /data-products/data.json and /digitalstrategy/data.json on www.ers.usda.gov.
+      The usda.gov apex answers 200 for /data.json but returns the same 1,341-byte HTML shell it
+      returns for every path, so it is a catch-all rather than a catalog; www.usda.gov/data.json
+      is 403 behind an Akamai edge block and could not be read. No DCAT-US catalog attributable
+      to ERS was found. This is the government regime's own named standard
+      (scoring.yml government.standards includes dcat), so its absence is the specific,
+      actionable gap for this provider.
+  - id: ckan
+    label: CKAN catalog API
+    conforms: false
+    evidence: https://catalog.data.gov/api/3/action/organization_list?q=economic-research
+    note: >-
+      ERS runs no CKAN of its own. A lookup against catalog.data.gov's CKAN action API on
+      2026-09-06 returned "Not Found" for the queried organization endpoints, so no ERS
+      organization record could be confirmed from that side either.
+  - id: fedramp
+    label: FedRAMP authorization
+    conforms: unknown
+    evidence: https://www.ers.usda.gov/developer/api-terms-of-service
+    note: >-
+      No FedRAMP claim, ATO reference, SOC 2, ISO 27001 or trust center appears anywhere on the
+      ERS developer surface. Not asserted either way: a Federal agency system operates under
+      FISMA/ATO rather than publishing a commercial attestation, and absence of a published
+      claim is not absence of an authorization.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
