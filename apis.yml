@@ -9,14 +9,18 @@ description: >-
 type: Index
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - usda-ree-ers/arms-data-api
+  open_source: unknown
   commercial: true
   callable_host: false
   label: Hosted service · you call their endpoint
-  confidence: medium
+  confidence: low
   source:
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: free
@@ -41,7 +45,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/economic-r
 tags:
   - Agriculture
   - Economics
-  - Federal-Government
+  - Federal Government
   - Research
   - Open Data
   - Geospatial
@@ -54,6 +58,7 @@ tags_raw:
   - Open Data
   - Geospatial
   - Statistics
+  - Federal-Government
 url: https://www.ers.usda.gov/
 created: '2024-12-25'
 modified: '2026-09-06'
