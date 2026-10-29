@@ -1,4 +1,4 @@
-# Economic Research Service (economic-research-service)
+# Economic Research Service
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,81 +64,117 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Economic Research Service (ERS) is a division of the United States
-Department of Agriculture (USDA) that conducts economic research and analysis
-related to agriculture, food, and rural development. ERS provides policymakers,
-stakeholders, and the public with valuable information and data to help inform
-decision-making and policy development.
+The Economic Research Service (ERS) is a division of the United States Department of Agriculture (USDA) that conducts economic research and analysis related to agriculture, food, and rural development. ERS provides policymakers, stakeholders, and the public with valuable information and data to help inform decision-making and policy development.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/economic-research-service/main/apis.yml)
+**Areas:** Agriculture · Economics · Federal Government · Research · Open Data · Geospatial · Statistics
 
-## Scope
+## Economic Research Service on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Economic Research Service is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/economic-research-service/](https://apis.io/providers/economic-research-service/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (2)
 
-- Agriculture
-- Economics
-- Federal Government
-- Research
+- [USDA ERS Data APIs](https://apis.io/apis/economic-research-service/ers-data-apis/) — Access ERS data products in machine-readable formats for analysis or integration into your own applications. Delivered via api.data.gov as REST endpoints.…
+- [USDA ERS Geospatial APIs](https://apis.io/apis/economic-research-service/ers-geospatial-apis/) — Integrate ERS map layers into the GIS package of your choice, on their own or mashed up with other geospatial data.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2024-12-25
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### USDA ERS Data APIs
+Model Context Protocol servers that expose the API to agents.
 
-Access ERS data products in machine-readable formats for analysis or
-integration into your own applications. Delivered via api.data.gov as REST
-endpoints. Requires an api.data.gov key.
+- [economic-research-service-mcp.yml](https://apis.io/servers/economic-research-service/economic-research-service-mcp-yml/)
 
-**Human URL:** [https://www.ers.usda.gov/developer/data-apis](https://www.ers.usda.gov/developer/data-apis)
+#### Security (2)
 
-**Base URL:** https://api.ers.usda.gov
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Economic Research Service Authentication](https://apis.io/security/economic-research-service/economic-research-service-authentication/)
+- [Economic Research Service Domain Security](https://apis.io/security/economic-research-service/economic-research-service-domain-security/)
 
-- Agriculture
-- Data
-- Economics
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://www.ers.usda.gov/developer/data-apis)
-- [SignUp](https://api.data.gov/signup/)
+- [Economic Research Service Plans Pricing](https://apis.io/plans/economic-research-service/economic-research-service-plans-pricing/)
 
-### USDA ERS Geospatial APIs
+#### Rate limits (1)
 
-Integrate ERS map layers into the GIS package of your choice, on their own
-or mashed up with other geospatial data.
+Published request limits.
 
-**Human URL:** [https://www.ers.usda.gov/developer/geospatial-apis](https://www.ers.usda.gov/developer/geospatial-apis)
+- [Economic Research Service Rate Limits](https://apis.io/rate-limits/economic-research-service/economic-research-service-rate-limits/)
 
-**Base URL:** https://www.ers.usda.gov
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Agriculture
-- Geospatial
-- GIS
+- [Economic Research Service Finops](https://apis.io/finops/economic-research-service/economic-research-service-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://www.ers.usda.gov/developer/geospatial-apis)
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.ers.usda.gov/)
 - [Documentation](https://www.ers.usda.gov/developer/)
+- [Support](https://www.ers.usda.gov/contact-us)
+- [Blog](https://www.ers.usda.gov/amber-waves)
+- [Terms of service](https://www.ers.usda.gov/developer/api-terms-of-service)
+- [Privacy policy](https://www.ers.usda.gov/privacy/privacy-statement)
+- [GitHub](https://github.com/usda-ers)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 41.0** — developing · rubric 0.25.0 · scored 2026-10-23
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 24.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 50.0 |
+| Developer ergonomics | 52.4 |
+| Access clarity | 34.2 |
+
+**Agent readiness 20.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 24.5** — Government & Public Sector
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/economic-research-service/](https://apis.io/providers/economic-research-service/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Economic Research Service: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/economic-research-service/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
